@@ -1,0 +1,10 @@
+<span class="rating" data-rating="<%= rating %>">
+  <% for(var i = 0; i < 5; i++) {%>
+    <% if (i < rating) { %>
+      <span class="fa fa-star filled-star"></span>
+    <% } else { %>
+      <span class="fa fa-star"></span>
+    <% } %>
+  <% } %>
+  ( <span class="rating-number"> <%= rating %> </span> )
+</span>

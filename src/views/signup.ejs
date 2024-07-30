@@ -1,0 +1,25 @@
+<%- include('common/header'); -%>
+<main class="signup">
+  <div style="min-width: 350px;">
+    <h1>Реєстрація</h1>
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+    <form action="/signup" method="post">
+      <section>
+          <label for="email">Пошта</label>
+          <input id="email" name="email" type="email" autocomplete="off" required autofocus>
+      </section>
+      <section>
+          <label for="password">Пароль</label>
+          <input id="password" name="password" type="password" autocomplete="off" required>
+      </section>
+      <section>
+        <label for="password-repeat">Пароль, але другий раз</label>
+        <input id="password-repeat" name="password_repeat" type="password" autocomplete="off" required>
+    </section>      
+      <button style="width:100%" class="button button-primary" type="submit">Реєстрація</button>
+    </form>
+  </div>
+</main>
+<%- include('common/footer'); -%>

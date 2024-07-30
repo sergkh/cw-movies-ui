@@ -1,0 +1,49 @@
+<nav class="main">
+  <div>
+    <a class="title" href="/"><i class="fa-solid fa-film"></i> Фільмотека</a>
+    <div>
+      <ul>
+        <li>
+          <a id="main" href="/">Головна</a>
+        </li>
+          <% if (user) { %>
+            <li>
+              <a id="to-watch" href="/bookmarks/to-watch">Хочу переглянути</a>
+            </li>
+            <li>
+              <a id="watched" href="/bookmarks/watched">Переглянуті</a>
+            </li>
+            <% if (user.role === 'Admin') { %>
+              <li>
+                <a id="admin" href="/admin">Додати фільм</a>
+              </li>
+            <% } %>
+          <% } %>
+        <li>
+          <a id="about" href="/about">Про сайт</a>
+        </li>
+        <li>
+          <% if (user) { %>
+            <form action="/logout" method="post">
+              <button type="submit" class="button"><i class="fa-solid fa-right-from-bracket"></i> Вийти</button>
+            </form>
+          <% } else { %>
+            <a href="/login" class="button button-primary"><i class="fa-solid fa-right-to-bracket"></i> Увійти</a>
+          <% } %>
+        </li>
+        <% if (!user) { %>
+          <li>
+            <a href="/signup" class="button"><i class="fa-solid fa-user-plus"></i> Реєстрація</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+<% if(page) { %>
+  <script type="text/javascript">
+    // Позначаємо активний пункт меню класом active
+    const menuItem = document.getElementById('<%=page%>')
+    if (menuItem) menuItem.className = 'active';
+  </script>
+<% } %>

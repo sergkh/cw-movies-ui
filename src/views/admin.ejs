@@ -1,0 +1,45 @@
+<%- include('common/header'); -%>
+<%- include('components/navigation', { user: user, 'page': 'admin' }); -%>
+<main class="add-movie">
+  <div style="min-width: 350px;">
+    <h1>Додати фільм</h1>
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+    <% if (success) { %>
+      <p class="success"><%= success %></p>
+    <% } %>
+    <form action="/admin/movies" method="post" enctype="multipart/form-data">
+      <section>
+          <label for="title">Назва</label>
+          <input id="title" name="title" type="text" required autofocus />
+      </section>
+      <section>
+        <label for="descr">Опис</label>
+        <textarea id="descr" name="description"></textarea>
+      </section>
+      <section>
+        <label for="director">Режисер</label>
+        <input id="director" name="director" type="text" required />
+      </section>
+      <section>
+        <label for="actors">Актори</label>
+        <input id="actors" name="actors" type="text" required />
+      </section>
+      <section>
+        <label for="year">Рік</label>
+        <input id="year" name="year" type="number" required />
+      </section>
+      <section>
+        <label for="genres">Жанри</label>
+        <input id="genres" name="genres" type="text" required />
+      </section>
+      <section>
+        <label for="image">Зображення</label>
+        <input id="image" name="image" type="file" accept="image/png, image/jpeg" required />
+      </section>
+      <button style="width:100%" class="button button-primary" type="submit">Додати</button>
+    </form>
+  </div>
+</main>
+<%- include('common/footer'); -%>

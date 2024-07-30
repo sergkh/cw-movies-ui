@@ -1,0 +1,38 @@
+<%- include('common/header'); -%>
+<%- include('components/navigation', { user: user, 'page': page }); -%>
+<main>
+  <h1><%= title %></h1>
+  <section class="movie-list">
+    <% for(const movie of movies) {%>
+      <div>
+        <img src="<%= movie.image %>" class="movie-image" />
+
+        <div class="movie-info">
+          <a href="#" class="movie-name">
+            <%= movie.title %>
+          </a>
+          
+          <p style="margin-bottom: 2rem;">
+            <% for(const genre of movie.genres) {%>
+              <span class="tag"><%= genre %></span>
+            <% } %>
+          </p>
+          
+          <p class="director"><%= movie.director %></p>
+          <p style="font-size: 0.9rem;"><%= movie.year %></p>
+          <%- include('components/rating', {rating: movie.rating, movieId: movie.id }); %>
+          <% if (user) { %>
+            <div class="movie-actions">
+              <form action="/bookmarks/<%=listType%>/remove" method="post">
+                <input type="hidden" name="movieId" value="<%= movie.id %>" />
+                <input type="hidden" name="userId" value="<%= user.id %>" />
+                <button type="submit" class="button button-primary"><i class="fa-solid fa-minus"></i> Видалити зі списку</button>
+              </form>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </section>
+</main>
+<%- include('common/footer'); -%>
