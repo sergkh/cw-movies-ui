@@ -4,17 +4,22 @@ const { transformMovie, parseAuth, rejectUnauthenticated } = require('../utils')
 
 /* Головна сторінка */
 router.get('/', parseAuth, async function(req, res) {
-  // Отримуємо список фільмів з API, 
-  // populate=image означає, що ми хочемо також отримати зовнішне поле image
-  const response = await client.get('movies?populate=image');
-  const movies = response.data.data.map(movie => transformMovie(client.apiUrl, movie));
+  try {
+    // Отримуємо список фільмів з API, 
+    // populate=image означає, що ми хочемо також отримати зовнішне поле image
+    const response = await client.get('movies?populate=image');
+    const movies = response.data.data.map(movie => transformMovie(client.apiUrl, movie));
 
-  // завантажуємо списки фільмів користувача, якщо він авторизований
-  // щоб правильно відобразити кнопки "Додати до переглянутих" та "Додати до перегляду"
-  var userWatched = [];
-  var userToWatch = [];
-  
-  res.render('index', { movies, user: req.user, userWatched, userToWatch });
+    // завантажуємо списки фільмів користувача, якщо він авторизований
+    // щоб правильно відобразити кнопки "Додати до переглянутих" та "Додати до перегляду"
+    var userWatched = [];
+    var userToWatch = [];
+    
+    res.render('index', { movies, user: req.user, userWatched, userToWatch });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Внутрішня помилка сервера');
+  }
 });
 
 router.get('/movies/:id', parseAuth, async function(req, res) {
