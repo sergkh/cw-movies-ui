@@ -6,7 +6,7 @@ router.get('/watched', parseAuth, async function(req, res) {
   const userId = req.user.id;
   const response = await client.get(`movies?populate=image&filters[watched_by][$eq]=${userId}`);
 
-  const movies = response.data.data.map(movie => transformMovie(client.apiUrl, movie));    
+  const movies = response.data.data.map(movie => transformMovie(movie));    
 
   res.render('bookmarks', { movies: movies, user: req.user, listType: 'watched', page: 'watched', title: 'Список переглянутих фільмів' });
 });
@@ -15,7 +15,7 @@ router.get('/to-watch', parseAuth, async function(req, res) {
   const userId = req.user.id;
   const response = await client.get(`movies?populate=image&filters[user_to_watch][$eq]=${userId}`);
 
-  const movies = response.data.data.map(movie => transformMovie(client.apiUrl, movie));   
+  const movies = response.data.data.map(movie => transformMovie(movie));   
 
   res.render('bookmarks', { movies: movies, user: req.user, listType: 'to-watch', page: 'to-watch', title: 'Список фільмів до перегляду'  });
 });

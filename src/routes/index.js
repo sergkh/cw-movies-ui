@@ -8,7 +8,7 @@ router.get('/', parseAuth, async function(req, res) {
     // Отримуємо список фільмів з API, 
     // populate=image означає, що ми хочемо також отримати зовнішне поле image
     const response = await client.get('movies?populate=image');
-    const movies = response.data.data.map(movie => transformMovie(client.apiUrl, movie));
+    const movies = response.data.data.map(movie => transformMovie(movie));
 
     // завантажуємо списки фільмів користувача, якщо він авторизований
     // щоб правильно відобразити кнопки "Додати до переглянутих" та "Додати до перегляду"
@@ -29,7 +29,7 @@ router.get('/movies/:id', parseAuth, async function(req, res) {
 
     console.log(`Showing movie ${movieId}`);
 
-    const movie = transformMovie(client.apiUrl, response.data.data, 'large');
+    const movie = transformMovie(response.data.data, 'large');
 
     var planned = false
     var watched = false
@@ -136,5 +136,23 @@ router.post('/movies/:id/rating', parseAuth, rejectUnauthenticated, async functi
 router.get('/about', parseAuth, function(req, res) {
   res.render('about', {user: req.user });
 });
+
+router.get('/images/*', async function(req, res) {
+  try {
+    const path = req.params[0];
+    console.log(`Loading image ${path}`);
+    const image = await client.getImage(path)
+    res.send(image.data);
+  } catch (error) {
+    if(error.response) {
+      console.log(error.request)
+      console.log(error.response.data)
+    } else {
+      console.log(error)
+    }
+    res.status(404).end();
+  }
+});
+
 
 module.exports = router;

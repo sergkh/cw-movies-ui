@@ -3,14 +3,14 @@ const client = require('./client');
 
 
 // Спрощує структуру об'єкта фільму отриману зі strapi
-function transformMovie(apiUrl, movie, imageSize = 'small') {
+function transformMovie(movie, imageSize = 'small') {
   const comments = movie.attributes.comments
     ? movie.attributes.comments.data.map(c => transformComment(c)) 
     : null;
 
   return Object.assign(movie.attributes, {
     id: movie.id, 
-    image: getImage(apiUrl, movie.attributes, imageSize), 
+    image: getImage('/images', movie.attributes, imageSize), 
     rating: computeRating(movie.attributes),
     comments
   });

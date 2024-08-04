@@ -19,4 +19,8 @@ client.authenticate = async function (identifier, password) {
   return jwt;
 };
 
+client.getImage = function (path) {
+  return this.get(apiUrl + "/" + path, { responseType: 'arraybuffer' });
+};
+
 module.exports = client;
