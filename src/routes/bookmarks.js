@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const client = require('../client');
 const { rejectUnauthenticated, parseAuth, transformMovie } = require('../utils');
+require('express-async-errors');
 
 router.get('/watched', parseAuth, async function(req, res) {
   const userId = req.user.id;
@@ -30,13 +31,8 @@ router.post('/watched', parseAuth, rejectUnauthenticated, async function(req, re
 
   console.log(`Adding movie ${movieId} to watched for user ${userId}`);
 
-  try {
-    await client.put(`/movies/${movieId}`, { data: { watched_by: { connect: [userId] } }});
-    res.redirect('/movies/' + movieId);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
+  await client.put(`/movies/${movieId}`, { data: { watched_by: { connect: [userId] } }});
+  res.redirect('/movies/' + movieId);
 });
 
 router.post('/to-watch', parseAuth, rejectUnauthenticated, async function(req, res) {
@@ -49,13 +45,8 @@ router.post('/to-watch', parseAuth, rejectUnauthenticated, async function(req, r
 
   console.log(`Adding movie ${movieId} to the to be watched list for user ${userId}`);
 
-  try {
-    await client.put(`/movies/${movieId}`, { data: { user_to_watch: { connect: [userId] } }});
-    res.redirect('/movies/' + movieId);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
+  await client.put(`/movies/${movieId}`, { data: { user_to_watch: { connect: [userId] } }});
+  res.redirect('/movies/' + movieId);
 });
 
 router.post('/to-watch/remove', parseAuth, rejectUnauthenticated, async function(req, res) {
@@ -68,13 +59,8 @@ router.post('/to-watch/remove', parseAuth, rejectUnauthenticated, async function
 
   console.log(`Removing movie ${movieId} from the to be watched for user ${userId}`);
 
-  try {
-    await client.put(`/movies/${movieId}`, { data: { user_to_watch: { disconnect: [userId] } }});
-    res.redirect('/movies/' + movieId);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
+  await client.put(`/movies/${movieId}`, { data: { user_to_watch: { disconnect: [userId] } }});
+  res.redirect('/movies/' + movieId);
 });
 
 router.post('/watched/remove', parseAuth, rejectUnauthenticated, async function(req, res) {
@@ -87,13 +73,8 @@ router.post('/watched/remove', parseAuth, rejectUnauthenticated, async function(
 
   console.log(`Removing movie ${movieId} from the watched list for user ${userId}`);
 
-  try {
-    await client.put(`/movies/${movieId}`, { data: { watched_by: { disconnect: [userId] } }});
-    res.redirect('/movies/' + movieId);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
+  await client.put(`/movies/${movieId}`, { data: { watched_by: { disconnect: [userId] } }});
+  res.redirect('/movies/' + movieId);
 });
 
 module.exports = router;
