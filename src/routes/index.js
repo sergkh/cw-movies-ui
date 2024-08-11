@@ -8,14 +8,8 @@ router.get('/', parseAuth, async function(req, res) {
   // Отримуємо список фільмів з API, 
   // populate=image означає, що ми хочемо також отримати зовнішне поле image
   const response = await client.get('movies?populate=image');
-  const movies = response.data.data.map(movie => transformMovie(movie));
-
-  // завантажуємо списки фільмів користувача, якщо він авторизований
-  // щоб правильно відобразити кнопки "Додати до переглянутих" та "Додати до перегляду"
-  var userWatched = [];
-  var userToWatch = [];
-  
-  res.render('index', { movies, user: req.user, userWatched, userToWatch });
+  const movies = response.data.data.map(movie => transformMovie(movie));  
+  res.render('index', { movies, user: req.user });
 });
 
 router.get('/movies/:id', parseAuth, async function(req, res) {
